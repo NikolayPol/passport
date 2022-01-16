@@ -11,7 +11,8 @@ import ru.job4j.passport.model.Passport;
 import java.util.List;
 
 /**
- * Класс ReportsController
+ * Класс ReportsController - взаимодействует с PassportController
+ * через RestTemplate
  *
  * @author Nikolay Polegaev
  * @version 1.0 15.01.2022
@@ -25,7 +26,7 @@ public class ReportsController {
     @Autowired
     private RestTemplate rest;
 
-    @GetMapping("/")
+    @GetMapping("/find")
     public List<Passport> findAll() {
         return rest.exchange(
                 API,
@@ -34,7 +35,7 @@ public class ReportsController {
         ).getBody();
     }
 
-    @GetMapping("/seria/{seria}")
+    @GetMapping("/find/{seria}")
     public List<Passport> findBySeria(@PathVariable int seria) {
         return rest.getForObject(API + "/seria/" + seria, List.class);
     }
@@ -44,12 +45,12 @@ public class ReportsController {
         return rest.getForObject(API + "/unavaliabe", List.class);
     }
 
-    @GetMapping("/replaceable")
+    @GetMapping("/find-replaceable")
     public List<Passport> findReplaceablePassports() {
         return rest.getForObject(API + "/replaceable", List.class);
     }
 
-    @PostMapping("/")
+    @PostMapping("/save")
     public ResponseEntity<Passport> create(@RequestBody Passport passport) {
         Passport rsl = rest.postForObject(API, passport, Passport.class);
         return new ResponseEntity<>(
@@ -58,13 +59,13 @@ public class ReportsController {
         );
     }
 
-    @PutMapping("/")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Void> update(@RequestBody Passport passport) {
         rest.put(API, passport);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         rest.delete(API_ID, id);
         return ResponseEntity.ok().build();
