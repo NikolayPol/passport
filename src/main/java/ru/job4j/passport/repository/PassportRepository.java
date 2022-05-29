@@ -26,4 +26,9 @@ public interface PassportRepository extends JpaRepository<Passport, Long> {
             + "AND current_timestamp + INTERVAL '3 month'",
     nativeQuery = true)
     Optional<List<Passport>> findReplaceablePassports();
+
+    Optional<Passport> findPassportByNumber(int number);
+
+    @Query("select p from Passport p where p.name = :name1")
+    Optional<Passport> findPassportByName(String name1);
 }

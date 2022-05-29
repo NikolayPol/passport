@@ -18,6 +18,18 @@
     </properties>
     <dependencies>
         <dependency>
+<!--удобная библиотека утилит https://www.baeldung.com/apache-commons-io-->
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+<!--зависимость для graphQL Spqr-->
+        <dependency>
+            <groupId>io.leangen.graphql</groupId>
+            <artifactId>graphql-spqr-spring-boot-starter</artifactId>
+            <version>0.0.6</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>

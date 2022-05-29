@@ -1,5 +1,8 @@
 package ru.job4j.passport.service;
 
+import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLQuery;
+import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.job4j.passport.model.Passport;
@@ -12,10 +15,11 @@ import java.util.Optional;
  * Класс PassportService
  *
  * @author Nikolay Polegaev
- * @version 1.0 15.01.2022
+ * @version 2.0 29.05.2022
  */
 @Service
 @AllArgsConstructor
+@GraphQLApi
 public class PassportService {
     private final PassportRepository passportRepository;
 
@@ -23,12 +27,25 @@ public class PassportService {
         return passportRepository.findAll();
     }
 
-    public Optional<Passport> findById(long id) {
+    @GraphQLQuery(name = "getPassportById")
+    public Optional<Passport> findById(@GraphQLArgument(name = "id") long id) {
         return passportRepository.findById(id);
     }
 
     public List<Passport> findBySeries(int series) {
         return passportRepository.findBySeries(series).orElse(List.of());
+    }
+
+    @GraphQLQuery(name = "getPassportByNumber")
+    public Optional<Passport> findByNumber(
+            @GraphQLArgument(name = "number") int number) {
+        return passportRepository.findPassportByNumber(number);
+    }
+
+    @GraphQLQuery(name = "getPassportByName")
+    public Optional<Passport> findByName(
+            @GraphQLArgument(name = "name") String name) {
+        return passportRepository.findPassportByName(name);
     }
 
     public List<Passport> findUnavaliabePassports() {
